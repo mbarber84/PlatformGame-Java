@@ -13,7 +13,7 @@ public class GamePanel extends JPanel{
     
     private MouseInputs mouseInputs;
     private float xDelta = 150, yDelta = 150; // int to float slows speed down in jframe
-    private float xDir = 0.05f, yDir = 0.05f; // int to float slows speed down in jframe
+    private float xDir = 1f, yDir = 1f; // int to float slows speed down in jframe
     private int frames = 0;
     private long lastCheck = 0;
     
@@ -55,14 +55,8 @@ public class GamePanel extends JPanel{
         
         g.fillRect((int)xDelta,(int)yDelta, 50, 50); //can only draw using int so converted from float at top
         
-        frames++;
-        if(System.currentTimeMillis() - lastCheck >= 1000){
-            lastCheck = System.currentTimeMillis();
-            System.out.println("FPS: " + frames);
-            frames = 0;
-        }
         
-        repaint();
+        
     }
 
     private void updateRectangle() {
