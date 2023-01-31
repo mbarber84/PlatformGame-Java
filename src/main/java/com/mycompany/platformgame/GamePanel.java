@@ -4,6 +4,7 @@ package com.mycompany.platformgame;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -39,6 +40,16 @@ public class GamePanel extends JPanel{
         addMouseMotionListener(mouseInputs);
     }
     
+    private void importImg() {
+        File f = new File("/player.png");
+        
+        try {
+            img = ImageIO.read(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void changeXDelta(int value){
         this.xDelta += value;
         
@@ -62,9 +73,8 @@ public class GamePanel extends JPanel{
        //updateRectangle();
         //g.setColor(color);
         //g.fillRect((int)xDelta,(int)yDelta, 50, 50); //can only draw using int so converted from float at top
-        
-       // g.drawImage(img, WIDTH, WIDTH, null);
-        
+                
+        //g.drawImage(null, x, y, null);
     }
 
    /* private void updateRectangle() {
@@ -96,13 +106,5 @@ public class GamePanel extends JPanel{
         setPreferredSize(size);
     }
 
-    private void importImg() {
-        InputStream is = getClass().getResourceAsStream("/pngwing.com(3).png");
-        
-        try {
-            img = ImageIO.read(is);
-        } catch (IOException e) {
-            Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+    
 }
