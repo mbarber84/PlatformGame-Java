@@ -3,28 +3,28 @@ package Inputs;
 import com.mycompany.platformgame.GamePanel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import static Utilities.Constants.Direction.*;
 
 /**
  *
  * @author mbarb
  */
-public class KeyboardInputs implements KeyListener{
-    
+public class KeyboardInputs implements KeyListener {
+
     private GamePanel gamePanel;
-    public KeyboardInputs(GamePanel gamePanel){
+
+    public KeyboardInputs(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        
+
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        
-       switch(e.getKeyCode()){
+
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 gamePanel.getGame().getPlayer().setUp(true);
                 break;
@@ -42,7 +42,7 @@ public class KeyboardInputs implements KeyListener{
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch(e.getKeyCode()){
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 gamePanel.getGame().getPlayer().setUp(false);
                 break;
@@ -57,5 +57,5 @@ public class KeyboardInputs implements KeyListener{
                 break;
         }
     }
-    
+
 }

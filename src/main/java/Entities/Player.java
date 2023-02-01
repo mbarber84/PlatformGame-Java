@@ -4,11 +4,9 @@ import static Utilities.Constants.PlayerConstants.GetSpriteAmount;
 import static Utilities.Constants.PlayerConstants.IDLE;
 import static Utilities.Constants.PlayerConstants.RUNNING;
 import static Utilities.Constants.PlayerConstants.ATTACK_1;
+import Utilities.LoadSave;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -29,11 +27,11 @@ public class Player extends Entity {
     }
 
     public void update() {
-        
+
         updatePos();
         updateAnimationTick();
         setAnimation();
-       
+
     }
 
     public void render(Graphics g) {
@@ -54,43 +52,45 @@ public class Player extends Entity {
     }
 
     private void setAnimation() {
-        
+
         int startAni = playerAction;
-        
+
         if (moving) {
             playerAction = RUNNING;
         } else {
             playerAction = IDLE;
         }
-        
-        if(attacking)
+
+        if (attacking) {
             playerAction = ATTACK_1;
-        
-        if(startAni != playerAction)
+        }
+
+        if (startAni != playerAction) {
             resetAniTick();
+        }
     }
-    
-    private void resetAniTick(){
+
+    private void resetAniTick() {
         aniTick = 0;
         aniIndex = 0;
     }
 
     private void updatePos() {
-        
+
         moving = false;
-     
-        if(left && !right){
+
+        if (left && !right) {
             x -= playerSpeed;
             moving = true;
-        }else if(right && !left){
+        } else if (right && !left) {
             x += playerSpeed;
             moving = true;
         }
-        
-        if(up && ! down){
+
+        if (up && !down) {
             y -= playerSpeed;
             moving = true;
-        }else if(down && !up){
+        } else if (down && !up) {
             y += playerSpeed;
             moving = true;
         }
@@ -98,30 +98,24 @@ public class Player extends Entity {
 
     private void loadAnimations() {
 
-        File f = new File("Res/player2.png");
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-        try {
-            BufferedImage img = ImageIO.read(f);
-            animations = new BufferedImage[9][6];
-            for (int j = 0; j < animations.length; j++) {
-                for (int i = 0; i < animations[j].length; i++) {
-                    animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
-                }
+        animations = new BufferedImage[9][6];
+        for (int j = 0; j < animations.length; j++) {
+            for (int i = 0; i < animations[j].length; i++) {
+                animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }//try catch .close() 
-
+        }
     }
-    
-    public void resetDirBooleans(){
+
+    public void resetDirBooleans() {
         left = false;
         up = false;
         right = false;
         down = false;
     }
-    
-    public void setAttacking(boolean attacking){
+
+    public void setAttacking(boolean attacking) {
         this.attacking = attacking;
     }
 
@@ -156,7 +150,5 @@ public class Player extends Entity {
     public void setDown(boolean down) {
         this.down = down;
     }
-    
-    
 
 }

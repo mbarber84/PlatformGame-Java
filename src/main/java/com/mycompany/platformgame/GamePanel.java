@@ -2,6 +2,8 @@ package com.mycompany.platformgame;
 
 import Inputs.KeyboardInputs;
 import Inputs.MouseInputs;
+import static com.mycompany.platformgame.Game.GAME_HEIGHT;
+import static com.mycompany.platformgame.Game.GAME_WIDTH;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -29,24 +31,22 @@ public class GamePanel extends JPanel {
     public void updateGame() {
 
     }
-    
-     public Game getGame(){
+
+    public Game getGame() {
         return game;
     }
 
     //paintComponent never gets called directly - it is call when the play button is used.
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         game.render(g);
     }
 
     private void setPanelSize() {
-        Dimension size = new Dimension(1280, 800);
-        setMinimumSize(size);
-        setMaximumSize(size);
+        Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
         setPreferredSize(size);
+        System.out.println("SIZE : " + GAME_WIDTH + " : " + GAME_HEIGHT);
     }
 
-    
 }
