@@ -82,13 +82,18 @@ public class GamePanel extends JPanel{
         }
     }
     
-    //paintComponent never gets called directly - it is call when the play button is used.
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
+    public void updateGame(){
         
         updateAnimationTick();
         setAnimation();
         updatePos();
+    }
+    
+    //paintComponent never gets called directly - it is call when the play button is used.
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        
+       
                 
         g.drawImage(animations[playerAction][aniIndex], (int)xDelta, (int)yDelta, 256, 160, null);
     }

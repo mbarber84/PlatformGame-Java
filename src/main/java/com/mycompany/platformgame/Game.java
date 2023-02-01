@@ -10,6 +10,7 @@ public class Game implements Runnable{
     private GamePanel gamePanel;
     private Thread gameThread;
     private final int FPS_SET = 120;
+    private final int UPS_SET = 200;
     
     public Game(){
         gamePanel = new GamePanel();
@@ -23,30 +24,49 @@ public class Game implements Runnable{
         gameThread = new Thread(this);
         gameThread.start();
     }
+    
+    public void update(){
+        gamePanel.updateGame();
+    }
 
     @Override
     public void run() {
         
         double timePerFrame = 1000000000.0 / FPS_SET; //nanoseconds
-        long lastFrame = System.nanoTime();
-        long now = System.nanoTime();
+        double timePerUpdate = 1000000000.0 / UPS_SET; //nanoseconds
+        long previousTime = System.nanoTime();
         
         int frames = 0;
+        int updates = 0;
         long lastCheck = System.currentTimeMillis();
         
+        double deltaU = 0; //U = updates
+        double delatF = 0; //F = frames
+        
         while(true){
-            now = System.nanoTime();
-            if(now - lastFrame >= timePerFrame){
-                gamePanel.repaint();
-                lastFrame = now;
-                frames++;
+            long currentTime = System.nanoTime();
+            
+            deltaU += (currentTime - previousTime) / timePerUpdate;
+            delatF += (currentTime - previousTime) / timePerFrame;
+            previousTime = currentTime;
+            
+            if(deltaU >= 1){ //to help prevent lag and wasted time from FPS
+               update();
+               updates++;
+               deltaU--;
             }
             
+            if(delatF >= 1){
+                gamePanel.repaint();
+                frames++;
+                delatF--;
+            }            
             
             if(System.currentTimeMillis() - lastCheck >= 1000){
                 lastCheck = System.currentTimeMillis();
-                System.out.println("FPS: " + frames);
+                System.out.println("FPS: " + frames + " | UPS: " + updates);
                 frames = 0;
+                updates = 0;
         }
             
         }
