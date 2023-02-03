@@ -1,7 +1,7 @@
 package com.mycompany.platformgame;
 
-import Entities.Player;
-import Levels.LevelManager;
+import Entities.Character;
+import Levels.LevelController;
 import java.awt.Graphics;
 
 /**
@@ -15,8 +15,8 @@ public class Game implements Runnable {
     private Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
-    private Player player;
-    private LevelManager levelManager;
+    private Character character;
+    private LevelController levelController;
 
     public final static int TILES_DEFAULT_SIZE = 32;
     public final static float SCALE = 2f;
@@ -38,8 +38,8 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player = new Player(200, 200);
-        levelManager = new LevelManager(this);
+        character = new Character(200, 200, (int)(64 * SCALE), (int)(40 * SCALE));
+        levelController = new LevelController(this);
     }
 
     private void startGameLoop() {
@@ -48,17 +48,18 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        player.update();
-        levelManager.update();
+        character.update();
+        levelController.update();
     }
 
     public void render(Graphics g) {
-        levelManager.draw(g);
-        player.render(g);
+        levelController.draw(g);
+        character.render(g);
+        
     }
 
-    public Player getPlayer() {
-        return player;
+    public Character getCharacter() {
+        return character;
     }
 
     @Override
@@ -106,7 +107,7 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-        player.resetDirBooleans();
+        character.resetDirBooleans();
     }
 
 }

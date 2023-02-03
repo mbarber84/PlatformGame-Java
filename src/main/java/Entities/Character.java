@@ -1,9 +1,9 @@
 package Entities;
 
-import static Utilities.Constants.PlayerConstants.GetSpriteAmount;
-import static Utilities.Constants.PlayerConstants.IDLE;
-import static Utilities.Constants.PlayerConstants.RUNNING;
-import static Utilities.Constants.PlayerConstants.ATTACK_1;
+import static Utilities.Constants.CharacterConstants.ATTACK_1;
+import static Utilities.Constants.CharacterConstants.GetSpriteAmount;
+import static Utilities.Constants.CharacterConstants.IDLE;
+import static Utilities.Constants.CharacterConstants.RUNNING;
 import Utilities.LoadSave;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -12,30 +12,32 @@ import java.awt.image.BufferedImage;
  *
  * @author mbarb
  */
-public class Player extends Entity {
+public class Character extends Entity {
 
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 15;
-    private int playerAction = IDLE;
+    private int characterAction = IDLE;
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down;
-    private float playerSpeed = 2.0f;
+    private float characterSpeed = 2.0f;
 
-    public Player(float x, float y) {
-        super(x, y);
+    public Character(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimations();
     }
 
     public void update() {
 
         updatePos();
+        updateHitbox();
         updateAnimationTick();
         setAnimation();
 
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 256, 160, null);
+        g.drawImage(animations[characterAction][aniIndex], (int) x, (int) y, width, height, null);
+        drawHitbox(g);
     }
 
     private void updateAnimationTick() {
@@ -43,7 +45,7 @@ public class Player extends Entity {
         if (aniTick >= aniSpeed) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= GetSpriteAmount(playerAction)) {
+            if (aniIndex >= GetSpriteAmount(characterAction)) {
                 aniIndex = 0;
                 attacking = false;
             }
@@ -53,19 +55,19 @@ public class Player extends Entity {
 
     private void setAnimation() {
 
-        int startAni = playerAction;
+        int startAni = characterAction;
 
         if (moving) {
-            playerAction = RUNNING;
+            characterAction = RUNNING;
         } else {
-            playerAction = IDLE;
+            characterAction = IDLE;
         }
 
         if (attacking) {
-            playerAction = ATTACK_1;
+            characterAction = ATTACK_1;
         }
 
-        if (startAni != playerAction) {
+        if (startAni != characterAction) {
             resetAniTick();
         }
     }
@@ -80,18 +82,18 @@ public class Player extends Entity {
         moving = false;
 
         if (left && !right) {
-            x -= playerSpeed;
+            x -= characterSpeed;
             moving = true;
         } else if (right && !left) {
-            x += playerSpeed;
+            x += characterSpeed;
             moving = true;
         }
 
         if (up && !down) {
-            y -= playerSpeed;
+            y -= characterSpeed;
             moving = true;
         } else if (down && !up) {
-            y += playerSpeed;
+            y += characterSpeed;
             moving = true;
         }
     }
@@ -152,3 +154,4 @@ public class Player extends Entity {
     }
 
 }
+

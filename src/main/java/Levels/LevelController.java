@@ -10,13 +10,13 @@ import java.awt.image.BufferedImage;
  *
  * @author mbarb
  */
-public class LevelManager {
+public class LevelController {
 
     private Game game;
     private BufferedImage[] levelSprite;
     private Level levelOne;
 
-    public LevelManager(Game game) {
+    public LevelController(Game game) {
         this.game = game;
         importOutsideSprites();
         levelOne = new Level(LoadSave.GetLevelData());
@@ -49,3 +49,4 @@ public class LevelManager {
     }
 
 }
+

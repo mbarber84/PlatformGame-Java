@@ -14,7 +14,7 @@ public class Constants {
         public static final int DOWN = 3;
     }
 
-    public static class PlayerConstants {
+    public static class CharacterConstants {
 
         public static final int IDLE = 0;
         public static final int RUNNING = 1;
@@ -26,9 +26,9 @@ public class Constants {
         public static final int ATTACK_JUMP_1 = 7;
         public static final int ATTACK_JUMP_2 = 8;
 
-        public static int GetSpriteAmount(int player_action) { //Upercase G due to it being a static method
+        public static int GetSpriteAmount(int character_action) { //Upercase G due to it being a static method
 
-            switch (player_action) {
+            switch (character_action) {
                 case RUNNING:
                     return 6;
                 case IDLE:
