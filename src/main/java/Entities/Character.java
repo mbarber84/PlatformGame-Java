@@ -6,6 +6,7 @@ import static Utilities.Constants.CharacterConstants.IDLE;
 import static Utilities.Constants.CharacterConstants.RUNNING;
 import static Utilities.HelpMethods.CanMoveHere;
 import Utilities.LoadSave;
+import com.mycompany.platformgame.Game;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -22,23 +23,25 @@ public class Character extends Entity {
     private boolean left, up, right, down;
     private float characterSpeed = 2.0f;
     private int[][] lvlData;
+    private float xDrawOffset = 21 * Game.SCALE;
+    private float yDrawOffset = 4 * Game.SCALE;
 
     public Character(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
+        initHitbox(x, y, 20 * Game.SCALE, 28 * Game.SCALE);
     }
 
     public void update() {
 
         updatePos();
-        updateHitbox();
         updateAnimationTick();
         setAnimation();
 
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[characterAction][aniIndex], (int) x, (int) y, width, height, null);
+        g.drawImage(animations[characterAction][aniIndex], (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
         drawHitbox(g);
     }
 
@@ -98,9 +101,15 @@ public class Character extends Entity {
             ySpeed = characterSpeed; 
         }
         
-       if(CanMoveHere(x + xSpeed, y + ySpeed, width, height, lvlData)) {
-           this.x += xSpeed;
-           this.y += ySpeed;
+//       if(CanMoveHere(x + xSpeed, y + ySpeed, width, height, lvlData)) {
+//           this.x += xSpeed;
+//           this.y += ySpeed;
+//           moving = true;
+//       }
+
+        if(CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, hitbox.width, hitbox.height, lvlData)) {
+           hitbox.x += xSpeed;
+           hitbox.y += ySpeed;
            moving = true;
        }
     }
