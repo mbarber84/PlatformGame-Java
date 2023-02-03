@@ -1,7 +1,8 @@
 package com.mycompany.platformgame;
 
-import Entities.Character;
-import Levels.LevelController;
+import GameStates.Gamestate;
+import GameStates.Menu;
+import GameStates.Playing;
 import java.awt.Graphics;
 
 /**
@@ -15,8 +16,9 @@ public class Game implements Runnable {
     private Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
-    private Character character;
-    private LevelController levelController;
+
+    private Playing playing;
+    private Menu menu;
 
     public final static int TILES_DEFAULT_SIZE = 32;
     public final static float SCALE = 2f;
@@ -38,9 +40,8 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        levelController = new LevelController(this);
-        character = new Character(200, 200, (int)(64 * SCALE), (int)(40 * SCALE));
-        character.loadLvlData(levelController.getCurrentLevel().getLevelData());
+        menu = new Menu(this);
+        playing = new Playing(this);
     }
 
     private void startGameLoop() {
@@ -49,18 +50,29 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        character.update();
-        levelController.update();
+        switch (Gamestate.state) {
+            case MENU:
+                menu.update();
+                break;
+            case PLAYING:
+                playing.update();
+                break;
+            default:
+                break;
+        }
     }
 
     public void render(Graphics g) {
-        levelController.draw(g);
-        character.render(g);
-        
-    }
-
-    public Character getCharacter() {
-        return character;
+        switch (Gamestate.state) {
+            case MENU:
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -108,7 +120,17 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-        character.resetDirBooleans();
+        if (Gamestate.state == Gamestate.PLAYING) {
+            playing.getCharacter().resetDirBooleans();
+        }
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Playing getPlaying() {
+        return playing;
     }
 
 }
