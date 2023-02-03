@@ -4,6 +4,7 @@ import static Utilities.Constants.CharacterConstants.ATTACK_1;
 import static Utilities.Constants.CharacterConstants.GetSpriteAmount;
 import static Utilities.Constants.CharacterConstants.IDLE;
 import static Utilities.Constants.CharacterConstants.RUNNING;
+import static Utilities.HelpMethods.CanMoveHere;
 import Utilities.LoadSave;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -20,6 +21,7 @@ public class Character extends Entity {
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down;
     private float characterSpeed = 2.0f;
+    private int[][] lvlData;
 
     public Character(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -80,22 +82,27 @@ public class Character extends Entity {
     private void updatePos() {
 
         moving = false;
+        if(!left && !right && !up && !down)
+            return;
+        
+        float xSpeed = 0, ySpeed = 0;
 
         if (left && !right) {
-            x -= characterSpeed;
-            moving = true;
+            xSpeed = -characterSpeed;
         } else if (right && !left) {
-            x += characterSpeed;
-            moving = true;
+            xSpeed = characterSpeed;  
         }
-
         if (up && !down) {
-            y -= characterSpeed;
-            moving = true;
+            ySpeed = -characterSpeed; 
         } else if (down && !up) {
-            y += characterSpeed;
-            moving = true;
+            ySpeed = characterSpeed; 
         }
+        
+       if(CanMoveHere(x + xSpeed, y + ySpeed, width, height, lvlData)) {
+           this.x += xSpeed;
+           this.y += ySpeed;
+           moving = true;
+       }
     }
 
     private void loadAnimations() {
@@ -108,6 +115,10 @@ public class Character extends Entity {
                 animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
             }
         }
+    }
+    
+    public void loadLvlData(int [][] lvlData){
+        this.lvlData = lvlData;
     }
 
     public void resetDirBooleans() {
