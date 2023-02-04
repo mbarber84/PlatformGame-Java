@@ -3,8 +3,10 @@ package GameStates;
 import Entities.Character;
 import Levels.LevelController;
 import UI.PauseOverlay;
+import Utilities.LoadSave;
 import com.mycompany.platformgame.Game;
 import static com.mycompany.platformgame.Game.SCALE;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -19,6 +21,13 @@ public class Playing extends State implements Statemethods {
     private LevelController levelController;
     private PauseOverlay pauseOverlay;
     private boolean paused = false;
+    
+    private int xlvlOffset;
+    private int leftBorder = (int)(0.2 * Game.GAME_WIDTH);
+    private int rightBorder = (int)(0.8 * Game.GAME_WIDTH);
+    private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
+    private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
+    private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
 
     public Playing(Game game) {
         super(game);
@@ -37,18 +46,38 @@ public class Playing extends State implements Statemethods {
         if(!paused){
            levelController.update();
            character.update();
+           CheckBorderProximity();
         }else{
             pauseOverlay.update();
         }  
     }
+    
+    private void CheckBorderProximity() {
+        int characterX = (int)character.getHitbox().x;
+        int diff = characterX - xlvlOffset;
+        
+        if(diff > rightBorder)
+            xlvlOffset += diff - rightBorder;
+        else if(diff < leftBorder)
+            xlvlOffset += diff - leftBorder;
+        
+        if(xlvlOffset > maxLvlOffsetX)
+            xlvlOffset = maxLvlOffsetX;
+        else if(xlvlOffset < 0)
+            xlvlOffset = 0;
+    }
+
 
     @Override
     public void draw(Graphics g) {
-        levelController.draw(g);
-        character.render(g);
+        levelController.draw(g, xlvlOffset);
+        character.render(g, xlvlOffset);
         
-       if(paused)
+       if(paused){
+          g.setColor(new Color(48, 25, 52, 200));
+          g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
           pauseOverlay.draw(g);
+       }
     }
     
     public void mouseDragged(MouseEvent e){
@@ -126,4 +155,5 @@ public class Playing extends State implements Statemethods {
         return character;
     }
 
+    
 }
