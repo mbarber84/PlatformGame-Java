@@ -2,6 +2,7 @@ package GameStates;
 
 import Entities.Character;
 import Levels.LevelController;
+import UI.PauseOverlay;
 import com.mycompany.platformgame.Game;
 import static com.mycompany.platformgame.Game.SCALE;
 import java.awt.Graphics;
@@ -16,6 +17,8 @@ public class Playing extends State implements Statemethods {
 
     private Character character;
     private LevelController levelController;
+    private PauseOverlay pauseOverlay;
+    private boolean paused;
 
     public Playing(Game game) {
         super(game);
@@ -26,6 +29,7 @@ public class Playing extends State implements Statemethods {
         levelController = new LevelController(game);
         character = new Entities.Character(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
         character.loadLvlData(levelController.getCurrentLevel().getLevelData());
+        pauseOverlay = new PauseOverlay();
     }
 
     @Override
@@ -38,6 +42,7 @@ public class Playing extends State implements Statemethods {
     public void draw(Graphics g) {
         levelController.draw(g);
         character.render(g);
+        pauseOverlay.draw(g);
     }
 
     @Override
