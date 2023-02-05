@@ -30,9 +30,9 @@ public class EnemyController {
          System.out.println("Crab size = " + crabbies.size());
     }
     
-    public void update(int[][] lvlData){
+    public void update(int[][] lvlData, Character character){
         for(Crabby c : crabbies)
-            c.update(lvlData);
+            c.update(lvlData, character);
     }
     
     public void draw(Graphics g, int xLvlOffset){
