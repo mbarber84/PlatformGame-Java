@@ -47,7 +47,7 @@ public class Character extends Entity {
 
     public void render(Graphics g, int lvlOffset) {
         g.drawImage(animations[characterAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
-//        drawHitbox(g);
+//        drawHitbox(g, xLvlOffset);
     }
 
     private void updateAnimationTick() {

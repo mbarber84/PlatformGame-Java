@@ -21,10 +21,10 @@ public abstract class Entity { //abstract class = a class you can not create an 
         this.height = height;
     }
     
-    protected void drawHitbox(Graphics g){
+    protected void drawHitbox(Graphics g, int xLvlOffset){
         //To allow for better debugging on hitbox
         g.setColor(Color.red);
-        g.drawRect((int)hitbox.x, (int)hitbox.y, (int)hitbox.width, (int)hitbox.height);
+        g.drawRect((int)hitbox.x - xLvlOffset, (int)hitbox.y, (int)hitbox.width, (int)hitbox.height);
         
     }
 
