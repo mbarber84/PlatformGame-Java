@@ -1,6 +1,7 @@
 package GameStates;
 
 import Entities.Character;
+import Entities.EnemyController;
 import Levels.LevelController;
 import UI.PauseOverlay;
 import Utilities.LoadSave;
@@ -19,6 +20,7 @@ public class Playing extends State implements Statemethods {
 
     private Character character;
     private LevelController levelController;
+    private EnemyController enemyController;
     private PauseOverlay pauseOverlay;
     private boolean paused = false;
     
@@ -36,6 +38,7 @@ public class Playing extends State implements Statemethods {
 
     private void initClasses() {
         levelController = new LevelController(game);
+        enemyController = new EnemyController(this);
         character = new Entities.Character(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
         character.loadLvlData(levelController.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
@@ -46,6 +49,7 @@ public class Playing extends State implements Statemethods {
         if(!paused){
            levelController.update();
            character.update();
+           enemyController.update();
            CheckBorderProximity();
         }else{
             pauseOverlay.update();
@@ -72,6 +76,7 @@ public class Playing extends State implements Statemethods {
     public void draw(Graphics g) {
         levelController.draw(g, xlvlOffset);
         character.render(g, xlvlOffset);
+        enemyController.draw(g, xlvlOffset);
         
        if(paused){
           g.setColor(new Color(48, 25, 52, 200));
