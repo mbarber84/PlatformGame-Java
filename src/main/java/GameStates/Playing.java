@@ -49,7 +49,7 @@ public class Playing extends State implements Statemethods {
         if(!paused){
            levelController.update();
            character.update();
-           enemyController.update();
+           enemyController.update(levelController.getCurrentLevel().getLevelData());
            CheckBorderProximity();
         }else{
             pauseOverlay.update();
