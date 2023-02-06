@@ -51,6 +51,8 @@ public class Character extends Entity {
 
     //Attack hitbox
     private Rectangle2D.Float attackBox;
+    private int flipX = 0; //simple way to flip character to face opposite direction without sprite images
+    private int flipW = 1; //simple way to flip character to face opposite direction without sprite images
 
     public Character(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -61,7 +63,7 @@ public class Character extends Entity {
     }
 
     private void initAttackBox() {
-        attackBox = new Rectangle2D.Float(x, y, (int)(20 * Game.SCALE), (int)(20 * Game.SCALE));
+        attackBox = new Rectangle2D.Float(x, y, (int) (20 * Game.SCALE), (int) (20 * Game.SCALE));
     }
 
     public void update() {
@@ -87,7 +89,10 @@ public class Character extends Entity {
     }
 
     public void render(Graphics g, int lvlOffset) {
-        g.drawImage(animations[characterAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
+        g.drawImage(animations[characterAction][aniIndex], 
+                (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX, 
+                (int) (hitbox.y - yDrawOffset), 
+                width * flipW, height, null);
 //        drawHitbox(g, xLvlOffset);
         drawAttaclBox(g, lvlOffset);
         drawUI(g);
@@ -95,7 +100,7 @@ public class Character extends Entity {
 
     private void drawAttaclBox(Graphics g, int lvlOffsetX) {
         g.setColor(Color.red);
-        g.drawRect((int)attackBox.x - lvlOffsetX, (int)attackBox.y, (int)attackBox.width, (int) attackBox.height);
+        g.drawRect((int) attackBox.x - lvlOffsetX, (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
     }
 
     private void drawUI(Graphics g) {
@@ -114,11 +119,9 @@ public class Character extends Entity {
                 attacking = false;
             }
         }
-
     }
 
     private void setAnimation() {
-
         int startAni = characterAction;
 
         if (moving) {
@@ -126,7 +129,6 @@ public class Character extends Entity {
         } else {
             characterAction = IDLE;
         }
-
         if (inAir) {
             if (airSpeed < 0) {
                 characterAction = JUMP;
@@ -134,11 +136,14 @@ public class Character extends Entity {
                 characterAction = FALLING;
             }
         }
-
         if (attacking) {
-            characterAction = ATTACK_1;
+            characterAction = ATTACK;
+            if (startAni != ATTACK) {
+                aniIndex = 1;
+                aniTick = 0;
+                return;
+            }
         }
-
         if (startAni != characterAction) {
             resetAniTick();
         }
@@ -150,7 +155,6 @@ public class Character extends Entity {
     }
 
     private void updatePos() {
-
         moving = false;
         if (jump) {
             jump();
@@ -160,22 +164,22 @@ public class Character extends Entity {
                 return;
             }
         }
-
         float xSpeed = 0;
-
         if (left) {
             xSpeed -= characterSpeed;
+            flipX = width;
+            flipW = -1;
         }
         if (right) {
             xSpeed += characterSpeed;
+            flipX = 0;
+            flipW = 1;
         }
-
         if (!inAir) {
             if (!IsEntityOnGround(hitbox, lvlData)) {
                 inAir = true;
             }
         }
-
         if (inAir) {
             if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
                 hitbox.y += airSpeed;
@@ -193,7 +197,6 @@ public class Character extends Entity {
         } else {
             updateXPos(xSpeed);
         }
-
         moving = true;
     }
 
@@ -233,7 +236,7 @@ public class Character extends Entity {
 
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-        animations = new BufferedImage[9][6];
+        animations = new BufferedImage[7][8];
         for (int j = 0; j < animations.length; j++) {
             for (int i = 0; i < animations[j].length; i++) {
                 animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);

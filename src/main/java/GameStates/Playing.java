@@ -85,6 +85,10 @@ public class Playing extends State implements Statemethods {
        }
     }
     
+    public void resetAll(){
+        //Reset game
+    }
+    
     public void mouseDragged(MouseEvent e){
         if(paused)
             pauseOverlay.mouseDragged(e);
