@@ -5,6 +5,7 @@ import Utilities.LoadSave;
 import java.awt.image.BufferedImage;
 import static  Utilities.Constants.EnemyConstants.*;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 
@@ -32,6 +33,7 @@ public class EnemyController {
     
     public void update(int[][] lvlData, Character character){
         for(Crabby c : crabbies)
+            if(c.isActive())
             c.update(lvlData, character);
     }
     
@@ -39,10 +41,20 @@ public class EnemyController {
         drawCrabs(g, xLvlOffset);
     }
     private void drawCrabs(Graphics g, int xLvlOffset) {
-        for(Crabby c : crabbies){
+        for(Crabby c : crabbies)
+            if(c.isActive()){
             g.drawImage(crabbyArr[c.getEnemyState()][c.getAniIndex()],(int)c.getHitbox().x - xLvlOffset - CRABBY_DRAWOFFSET_X + c.flipX(), (int)c.getHitbox().y - CRABBY_DRAWOFFSET_Y, CRABBY_WIDTH * c.flipW(),CRABBY_HEIGHT, null);
         c.drawAttackBox(g, xLvlOffset);
         }
+    }
+    
+    public void checkEnemyHit(Rectangle2D.Float attackBox){
+        for(Crabby c : crabbies)
+            if(c.isActive())
+            if(attackBox.intersects(c.getHitbox())){
+                c.hurt(10);
+                return;
+            }
     }
 
     private void loadEnemyImgs() {

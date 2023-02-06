@@ -1,5 +1,6 @@
 package Entities;
 
+import GameStates.Playing;
 import static Utilities.Constants.CharacterConstants.*;
 import static Utilities.HelpMethods.*;
 import Utilities.LoadSave;
@@ -53,9 +54,13 @@ public class Character extends Entity {
     private Rectangle2D.Float attackBox;
     private int flipX = 0; //simple way to flip character to face opposite direction without sprite images
     private int flipW = 1; //simple way to flip character to face opposite direction without sprite images
+    
+    private boolean attackChecked;
+    private Playing playing;
 
-    public Character(float x, float y, int width, int height) {
+    public Character(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
+        this.playing = playing;
         loadAnimations();
         initHitbox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
         initAttackBox();
@@ -68,11 +73,19 @@ public class Character extends Entity {
 
     public void update() {
         updateHealthBar();
-        updateAttachkBox();
+        updateAttachkBox(); 
         updatePos();
+        if(attacking)
+            checkAttack();
         updateAnimationTick();
         setAnimation();
-
+    }
+    
+    private void checkAttack() {
+        if(attackChecked || aniIndex != 1)
+            return;
+        attackChecked = true;
+        playing.checkEnemyHit(attackBox);
     }
 
     private void updateAttachkBox() {
@@ -117,6 +130,7 @@ public class Character extends Entity {
             if (aniIndex >= GetSpriteAmount(characterAction)) {
                 aniIndex = 0;
                 attacking = false;
+                attackChecked = false;
             }
         }
     }
@@ -299,5 +313,7 @@ public class Character extends Entity {
     public void setJump(boolean jump) {
         this.jump = jump;
     }
+
+    
 
 }

@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 
 /**
  *
@@ -39,7 +40,7 @@ public class Playing extends State implements Statemethods {
     private void initClasses() {
         levelController = new LevelController(game);
         enemyController = new EnemyController(this);
-        character = new Entities.Character(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
+        character = new Entities.Character(200, 200, (int) (64 * SCALE), (int) (40 * SCALE), this);
         character.loadLvlData(levelController.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
     }
@@ -87,6 +88,10 @@ public class Playing extends State implements Statemethods {
     
     public void resetAll(){
         //Reset game
+    }
+    
+    public void checkEnemyHit(Rectangle2D.Float attackBox){
+        enemyController.checkEnemyHit(attackBox);
     }
     
     public void mouseDragged(MouseEvent e){
