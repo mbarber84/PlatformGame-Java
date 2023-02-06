@@ -47,7 +47,7 @@ public class Character extends Entity {
     private int healthBarYStart = (int) (14 * Game.SCALE);
 
     private int maxHealth = 100;
-    private int currentHealth = 40;
+    private int currentHealth = maxHealth;
     private int healthWidth = healthBarWidth;
 
     //Attack hitbox
@@ -73,6 +73,12 @@ public class Character extends Entity {
 
     public void update() {
         updateHealthBar();
+        
+        if(currentHealth <= 0){
+            playing.setGameOver(true);
+            return;
+        }
+       
         updateAttachkBox(); 
         updatePos();
         if(attacking)
@@ -107,7 +113,7 @@ public class Character extends Entity {
                 (int) (hitbox.y - yDrawOffset), 
                 width * flipW, height, null);
 //        drawHitbox(g, xLvlOffset);
-        drawAttaclBox(g, lvlOffset);
+//        drawAttaclBox(g, lvlOffset);
         drawUI(g);
     }
 
@@ -314,6 +320,19 @@ public class Character extends Entity {
         this.jump = jump;
     }
 
-    
+    public void resetAll(){
+        resetDirBooleans();
+        inAir = false;
+        attacking = false;
+        moving = false;
+        characterAction = IDLE;
+        currentHealth = maxHealth;
+        // starting position
+        hitbox.x = x;
+        hitbox.y = y;
+        
+         if (!IsEntityOnGround(hitbox, lvlData))
+                inAir = true;
+    }
 
 }

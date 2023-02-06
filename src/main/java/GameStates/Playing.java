@@ -3,6 +3,7 @@ package GameStates;
 import Entities.Character;
 import Entities.EnemyController;
 import Levels.LevelController;
+import UI.GameOverOverlay;
 import UI.PauseOverlay;
 import Utilities.LoadSave;
 import com.mycompany.platformgame.Game;
@@ -23,6 +24,7 @@ public class Playing extends State implements Statemethods {
     private LevelController levelController;
     private EnemyController enemyController;
     private PauseOverlay pauseOverlay;
+    private GameOverOverlay gameOverOverlay;
     private boolean paused = false;
     
     private int xlvlOffset;
@@ -31,6 +33,8 @@ public class Playing extends State implements Statemethods {
     private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
     private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
     private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
+    
+    private boolean gameOver;
 
     public Playing(Game game) {
         super(game);
@@ -43,11 +47,12 @@ public class Playing extends State implements Statemethods {
         character = new Entities.Character(200, 200, (int) (64 * SCALE), (int) (40 * SCALE), this);
         character.loadLvlData(levelController.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
+        gameOverOverlay = new GameOverOverlay(this);
     }
 
     @Override
     public void update() {
-        if(!paused){
+        if(!paused && !gameOver){
            levelController.update();
            character.update();
            enemyController.update(levelController.getCurrentLevel().getLevelData(), character);
@@ -83,11 +88,20 @@ public class Playing extends State implements Statemethods {
           g.setColor(new Color(48, 25, 52, 200));
           g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
           pauseOverlay.draw(g);
-       }
+       }else if(gameOver)
+           gameOverOverlay.draw(g);
     }
     
     public void resetAll(){
         //Reset game
+        gameOver = false;
+        paused = false;
+        character.resetAll();
+        enemyController.resetAllEnemies();
+    }
+    
+    public void setGameOver(boolean gameOver){
+        this.gameOver = gameOver;
     }
     
     public void checkEnemyHit(Rectangle2D.Float attackBox){
@@ -95,66 +109,75 @@ public class Playing extends State implements Statemethods {
     }
     
     public void mouseDragged(MouseEvent e){
-        if(paused)
-            pauseOverlay.mouseDragged(e);
+        if(!gameOver)
+            if(paused)
+                pauseOverlay.mouseDragged(e);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
+        if(!gameOver)
+            if (e.getButton() == MouseEvent.BUTTON1) {
             character.setAttacking(true);
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(paused)
-            pauseOverlay.mousePressed(e);
+        if(!gameOver)
+            if(paused)
+                pauseOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(paused)
-            pauseOverlay.mouseReleased(e);
+        if(!gameOver)
+            if(paused)
+                pauseOverlay.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if(paused)
-            pauseOverlay.mouseMoved(e);
+        if(!gameOver)
+            if(paused)
+                pauseOverlay.mouseMoved(e);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_A:
-                character.setLeft(true);
-                break;
-            case KeyEvent.VK_D:
-                character.setRight(true);
-                break;
-            case KeyEvent.VK_SPACE:
-                character.setJump(true);
-                break;
-            case KeyEvent.VK_BACK_SPACE:
-                paused = !paused;
-                break;
-        }
+        if(gameOver)
+           gameOverOverlay.KeyPresses(e);
+        else
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_A:
+                    character.setLeft(true);
+                    break;
+                case KeyEvent.VK_D:
+                    character.setRight(true);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    character.setJump(true);
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                    paused = !paused;
+                    break;
+            }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_A:
-                character.setLeft(false);
-                break;
-            case KeyEvent.VK_D:
-                character.setRight(false);
-                break;
-            case KeyEvent.VK_SPACE:
-                character.setJump(false);
-                break;
-        }
+        if(!gameOver)
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_A:
+                    character.setLeft(false);
+                    break;
+                case KeyEvent.VK_D:
+                    character.setRight(false);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    character.setJump(false);
+                    break;
+            }
     }
     
     public void unpauseGame() {

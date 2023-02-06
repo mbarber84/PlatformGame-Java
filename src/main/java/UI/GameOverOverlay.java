@@ -20,12 +20,12 @@ public class GameOverOverlay {
     }
     
     public void draw(Graphics g){
-        g.setColor(new Color(69,18,8, 100));
+        g.setColor(new Color(69,18,8, 200));
         g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
         
-        g.setColor(new Color(242,62,30));
-        g.drawString("Arrr, ye be done for matey! Game over!!", Game.GAME_WIDTH / 2, 150);
-        g.drawString("Ahoy there! If ye be wantin' to return to the main menu, just give that escape key a good press, ye hear!", Game.GAME_WIDTH / 2, 300);
+        g.setColor(new Color(102,255,0));
+        g.drawString("Arrr, ye be done for matey! Game over!!", Game.GAME_WIDTH / 3, 150);
+        g.drawString("Ahoy there! If ye be wantin' to return to the main menu, just give that escape key a good press, ye hear!", Game.GAME_WIDTH / 3, 300);
     }
     
     public void KeyPresses(KeyEvent e){
