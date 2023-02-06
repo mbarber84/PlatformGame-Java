@@ -4,7 +4,9 @@ import static Utilities.Constants.CharacterConstants.*;
 import static Utilities.HelpMethods.*;
 import Utilities.LoadSave;
 import com.mycompany.platformgame.Game;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -30,24 +32,76 @@ public class Character extends Entity {
     private float fallSpeedAftCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
+    //Health Bar
+    private BufferedImage statusBarImg;
+
+    private int statusBarWidth = (int) (192 * Game.SCALE);
+    private int statusBarHeight = (int) (58 * Game.SCALE);
+    private int statusBarX = (int) (10 * Game.SCALE);
+    private int statusBarY = (int) (10 * Game.SCALE);
+
+    private int healthBarWidth = (int) (150 * Game.SCALE);
+    private int healthBarHeight = (int) (4 * Game.SCALE);
+    private int healthBarXStart = (int) (34 * Game.SCALE);
+    private int healthBarYStart = (int) (14 * Game.SCALE);
+
+    private int maxHealth = 100;
+    private int currentHealth = 40;
+    private int healthWidth = healthBarWidth;
+
+    //Attack hitbox
+    private Rectangle2D.Float attackBox;
+
     public Character(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
-        initHitbox(x, y, (int)(20 * Game.SCALE), (int)(27 * Game.SCALE));
-        
+        initHitbox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
+        initAttackBox();
+
+    }
+
+    private void initAttackBox() {
+        attackBox = new Rectangle2D.Float(x, y, (int)(20 * Game.SCALE), (int)(20 * Game.SCALE));
     }
 
     public void update() {
-
+        updateHealthBar();
+        updateAttachkBox();
         updatePos();
         updateAnimationTick();
         setAnimation();
 
     }
 
+    private void updateAttachkBox() {
+        if (right) {
+            attackBox.x = hitbox.x + hitbox.width + (int) (Game.SCALE * 10);
+        } else if (left) {
+            attackBox.x = hitbox.x - hitbox.width - (int) (Game.SCALE * 10);
+        }
+        attackBox.y = hitbox.y + (int) (Game.SCALE * 10);
+    }
+
+    private void updateHealthBar() {
+        healthWidth = (int) ((currentHealth / (float) maxHealth) * healthBarWidth);
+    }
+
     public void render(Graphics g, int lvlOffset) {
         g.drawImage(animations[characterAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
 //        drawHitbox(g, xLvlOffset);
+        drawAttaclBox(g, lvlOffset);
+        drawUI(g);
+    }
+
+    private void drawAttaclBox(Graphics g, int lvlOffsetX) {
+        g.setColor(Color.red);
+        g.drawRect((int)attackBox.x - lvlOffsetX, (int)attackBox.y, (int)attackBox.width, (int) attackBox.height);
+    }
+
+    private void drawUI(Graphics g) {
+        g.drawImage(statusBarImg, statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
+        g.setColor(Color.red);
+        g.fillRect(healthBarXStart + statusBarX, healthBarYStart + statusBarY, healthWidth, healthBarHeight);
     }
 
     private void updateAnimationTick() {
@@ -72,12 +126,13 @@ public class Character extends Entity {
         } else {
             characterAction = IDLE;
         }
-        
-        if(inAir){
-            if(airSpeed < 0)
+
+        if (inAir) {
+            if (airSpeed < 0) {
                 characterAction = JUMP;
-            else
+            } else {
                 characterAction = FALLING;
+            }
         }
 
         if (attacking) {
@@ -97,11 +152,14 @@ public class Character extends Entity {
     private void updatePos() {
 
         moving = false;
-        if(jump)
+        if (jump) {
             jump();
-        if(!inAir)
-            if((!left && !right) || (right && left))
+        }
+        if (!inAir) {
+            if ((!left && !right) || (right && left)) {
                 return;
+            }
+        }
 
         float xSpeed = 0;
 
@@ -111,9 +169,9 @@ public class Character extends Entity {
         if (right) {
             xSpeed += characterSpeed;
         }
-        
-        if(!inAir){
-            if(!IsEntityOnGround(hitbox, lvlData)){
+
+        if (!inAir) {
+            if (!IsEntityOnGround(hitbox, lvlData)) {
                 inAir = true;
             }
         }
@@ -138,10 +196,11 @@ public class Character extends Entity {
 
         moving = true;
     }
-    
-     private void jump() {
-        if(inAir)
+
+    private void jump() {
+        if (inAir) {
             return;
+        }
         inAir = true;
         airSpeed = jumpSpeed;
     }
@@ -159,6 +218,17 @@ public class Character extends Entity {
         }
     }
 
+    public void changeHealth(int value) {
+        currentHealth += value;
+
+        if (currentHealth <= 0) {
+            currentHealth = 0;
+            //gameOver();
+        } else if (currentHealth >= maxHealth) {
+            currentHealth = maxHealth;
+        }
+    }
+
     private void loadAnimations() {
 
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
@@ -169,12 +239,15 @@ public class Character extends Entity {
                 animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
             }
         }
+
+        statusBarImg = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
     }
 
     public void loadLvlData(int[][] lvlData) {
         this.lvlData = lvlData;
-        if(!IsEntityOnGround(hitbox, lvlData))
+        if (!IsEntityOnGround(hitbox, lvlData)) {
             inAir = true;
+        }
     }
 
     public void resetDirBooleans() {
