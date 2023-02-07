@@ -132,8 +132,11 @@ public class PauseOverlay {
                 playing.unpauseGame();
             }
         }else if(isIn(e, replayBtn)){
-            if(replayBtn.isMousePressed())
-                System.out.println("Replay Level Action No Completed Yet!!");
+            if(replayBtn.isMousePressed()){
+                playing.resetAll();
+                playing.unpauseGame();
+            }
+//                System.out.println("Replay Level Action No Completed Yet!!");
         }else if(isIn(e, unpauseBtn)){
             if(unpauseBtn.isMousePressed())
                 playing.unpauseGame();

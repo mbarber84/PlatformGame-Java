@@ -23,18 +23,23 @@ public class EnemyController {
     public EnemyController(Playing playing){
         this.playing = playing;
         loadEnemyImgs();
-        addEnemy();
+        loadEnemy();
     }
     
-     private void addEnemy() {
+     private void loadEnemy() {
         crabbies = LoadSave.GetCrabs();
          System.out.println("Crab size = " + crabbies.size());
     }
     
     public void update(int[][] lvlData, Character character){
+        boolean isEnemyActive = false;
         for(Crabby c : crabbies)
-            if(c.isActive())
+            if(c.isActive()){
             c.update(lvlData, character);
+            isEnemyActive = true;
+            }
+        if(!isEnemyActive)
+            playing.setLevelCompleted(true);
     }
     
     public void draw(Graphics g, int xLvlOffset){
