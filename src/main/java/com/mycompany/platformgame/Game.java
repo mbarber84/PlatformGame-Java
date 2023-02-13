@@ -8,6 +8,10 @@ import java.awt.Graphics;
 /**
  *
  * @author mbarb
+ *  "Game" is the main component of a platform game. It initializes the game window, game panel, and game thread, and sets the frames per second (FPS) and updates per second (UPS) to 120 and 200 respectively.
+ * The game has two states - menu and playing - and has methods to update and render these states. 
+ *The game loop updates the game state, calculates the FPS and UPS, and repaints the game panel.
+ * The class also has methods to reset the game state when the game window loses focus and to retrieve the game's menu and playing states.
  */
 public class Game implements Runnable {
 
@@ -120,7 +124,7 @@ public class Game implements Runnable {
             }
 
         }
-
+/*This is a game loop which runs continuously, updating the game state and rendering the game display. The variables FPS_SET and UPS_SET determine the desired number of updates and frames per second. The code calculates the time between each update and frame and keeps track of the number of updates and frames completed. Every second, it prints the number of updates and frames completed and resets the counters. The loop continues to run until the game is closed.*/
     }
 
     public void windowFocusLost() {

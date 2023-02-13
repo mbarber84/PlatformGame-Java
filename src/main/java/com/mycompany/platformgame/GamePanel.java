@@ -11,6 +11,12 @@ import javax.swing.JPanel;
 /**
  *
  * @author mbarb
+ * The GamePanel class in the package com.mycompany.platformgame, which is a subclass of JPanel from the javax package.
+ * The GamePanel class serves as a view in the game, which is responsible for displaying the game state on the screen.
+ * The GamePanel constructor takes a Game object as an argument and sets it as a member variable.
+ * The class sets the size of the panel using the setPanelSize method and sets the preferred size to be the GAME_WIDTH and GAME_HEIGHT constants defined in the Game class.
+ * Additionally, the class adds keyboard and mouse listeners to receive inputs, and overrides the paintComponent method to render the game by calling the render method on the game object.
+ * The updateGame method is used to update the game state, although it is currently empty. The getGame method returns the game member variable.
  */
 public class GamePanel extends JPanel {
 
