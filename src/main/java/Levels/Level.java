@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * This Java code defines a class named Level with two instance variables, lvlData and crabs. Its constructor sets the lvlData instance variable and calls createEnemies() to         * initialize the crabs variable. The class also has methods to get the sprite index, lvlData, and crabs.
- * @author mbarb
+ * 
  */
 public class Level {
 

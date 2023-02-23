@@ -7,7 +7,7 @@ import java.awt.Graphics;
 
 /**
  *
- * @author mbarb
+ *
  *  "Game" is the main component of a platform game. It initializes the game window, game panel, and game thread, and sets the frames per second (FPS) and updates per second (UPS) to 120 and 200 respectively.
  * The game has two states - menu and playing - and has methods to update and render these states. 
  *The game loop updates the game state, calculates the FPS and UPS, and repaints the game panel.

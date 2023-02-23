@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * LevelController that controls the behaviour of a game level. The LevelController class depends on the LoadSave and Level classes to load the level data and sprites. It also       * depends on the Game class for the TILES_SIZE constant.
- * @author mbarb
+ * 
  */
 public class LevelController {
 

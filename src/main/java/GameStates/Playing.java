@@ -16,8 +16,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
 /**
- *
- * @author mbarb
+ * The Java code defines a class named "Playing" which extends "State" and implements "Statemethods". 
+ * 
  */
 public class Playing extends State implements Statemethods {
 
@@ -43,6 +43,7 @@ public class Playing extends State implements Statemethods {
         super(game);
         initClasses();
     }
+    //a constructor for the "Playing" class which takes a "Game" object as its parameter.
     
 
     private void initClasses() {
@@ -54,6 +55,7 @@ public class Playing extends State implements Statemethods {
         gameOverOverlay = new GameOverOverlay(this);
         levelCompletedOverlay = new LevelCompletedOverlay(this);
     }
+    //a private method to initialize the objects required for the game.
 
     @Override
     public void update() {
@@ -68,6 +70,7 @@ public class Playing extends State implements Statemethods {
            CheckBorderProximity();
         } 
     }
+    //update: a method to update the game state, which checks if the game is paused, level completed or not game       over, and then calls the appropriate method(s) to update the       game entities.
     
     private void CheckBorderProximity() {
         int characterX = (int)character.getHitbox().x;
@@ -83,6 +86,7 @@ public class Playing extends State implements Statemethods {
         else if(xlvlOffset < 0)
             xlvlOffset = 0;
     }
+    //a private method to check if the character is close to the left or right border of the screen, and then move the game world accordingly.
 
 
     @Override
@@ -100,6 +104,7 @@ public class Playing extends State implements Statemethods {
        else if(lvlCompleted)
            levelCompletedOverlay.draw(g);
     }
+    //method to draw the game state, which draws the game world, character and enemies, and also the overlay screens when the game is paused, level is completed, or the game is          over.
     
     public void resetAll(){
         //Reset game
@@ -108,14 +113,17 @@ public class Playing extends State implements Statemethods {
         character.resetAll();
         enemyController.resetAllEnemies();
     }
+    // a public method to reset the game state.
     
     public void setGameOver(boolean gameOver){
         this.gameOver = gameOver;
     }
+    //a public method to set the game over.
     
     public void checkEnemyHit(Rectangle2D.Float attackBox){
         enemyController.checkEnemyHit(attackBox);
     }
+    //a public method to check if the character's attack box hits an enemy.
     
     public void mouseDragged(MouseEvent e){
         if(!gameOver)

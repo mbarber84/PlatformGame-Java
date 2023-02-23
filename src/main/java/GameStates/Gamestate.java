@@ -1,8 +1,8 @@
 package GameStates;
 
 /**
+ * an enum called Gamestate, which has four possible values: PLAYING, MENU, OPTIONS, and QUIT. It also defines a static variable state initialized to MENU, indicating the current     * state of the game.
  *
- * @author mbarb
  */
 public enum Gamestate {
     

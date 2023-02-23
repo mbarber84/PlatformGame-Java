@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author mbarb
+ *
  *The GameWindow class in the package com.mycompany.platformgame, which creates a window for displaying the game using the JFrame class from the javax.swing package.
  * The GameWindow constructor takes a GamePanel object as an argument, adds it to the frame, sets various properties such as the close operation, re-sizability, location and visibility, and adds a WindowFocusListener to listen for focus changes.
  * The listener has two methods, windowGainedFocus and windowLostFocus, which are called when the window gains or loses focus respectively.

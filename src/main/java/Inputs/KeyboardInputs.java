@@ -9,7 +9,7 @@ import java.awt.event.KeyListener;
 
 /**
  * This Java code defines a class named KeyboardInputs that implements the KeyListener interface. Its constructor takes a GamePanel object as a parameter, and it overrides three     * methods of the KeyListener interface: keyTyped(), keyPressed(), and keyReleased(). The keyPressed() and keyReleased() methods use a switch statement to call methods in the        * Gamestate class based on the current state of the game (either MENU or PLAYING).
- * @author mbarb
+ * 
  */
 public class KeyboardInputs implements KeyListener {
 

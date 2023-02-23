@@ -9,8 +9,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * This class that implements both the MouseListener and MouseMotionListener interfaces. It defines methods for handling mouse events such as clicks, presses, releases, and          * movements. It uses a GamePanel object and checks the current state of the game to determine which event handlers to call. If the game is in the PLAYING state, it calls the mouse  * event handlers for the playing state. If it is in the MENU state, it calls the mouse event handlers for the menu state.
- * @author mbarb
+ * This class that implements both the MouseListener and MouseMotionListener interfaces. It defines methods for handling mouse events such as clicks, presses, releases, and         * movements. It uses a GamePanel object and checks the current state of the game to determine which event handlers to call. If the game is in the PLAYING state, it calls the       * mouse event handlers for the playing state. If it is in the MENU state, it calls the mouse event handlers for the menu state.
+ * 
  */
 public class MouseInputs implements MouseListener, MouseMotionListener {
 

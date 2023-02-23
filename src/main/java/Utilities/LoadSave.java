@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 /**
  *This Java code defines a utility class called LoadSave that provides methods for loading and saving game assets such as sprite images and level data. The class includes several    * public constants that represent the filenames of various assets, such as player sprites, menu buttons, and sound effects. 
- * @author mbarb
+ * 
  */
 public class LoadSave {
 

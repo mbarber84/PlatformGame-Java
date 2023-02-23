@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author mbarb
+ *
  * The GamePanel class in the package com.mycompany.platformgame, which is a subclass of JPanel from the javax package.
  * The GamePanel class serves as a view in the game, which is responsible for displaying the game state on the screen.
  * The GamePanel constructor takes a Game object as an argument and sets it as a member variable.

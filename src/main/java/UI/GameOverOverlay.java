@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 
 /**
  *
- * @author mbarb
+ *
  */
 public class GameOverOverlay {
     
