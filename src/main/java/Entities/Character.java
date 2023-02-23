@@ -11,8 +11,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
- *
- * @author mbarb
+ *  character class with various properties and actions such as speed, animations, health bar, and attack functionality. It imports libraries for graphics rendering and custom      *  classes for accessing game instances. The class extends the Entity class and contains methods for updating the character's position, animation, health bar, and attack box, as   *  well as rendering it on the screen.
+ * 
  */
 public class Character extends Entity {
 
@@ -70,6 +70,7 @@ public class Character extends Entity {
     private void initAttackBox() {
         attackBox = new Rectangle2D.Float(x, y, (int) (20 * Game.SCALE), (int) (20 * Game.SCALE));
     }
+    // Initializes the attack box for the character.
 
     public void update() {
         updateHealthBar();
@@ -78,7 +79,6 @@ public class Character extends Entity {
             playing.setGameOver(true);
             return;
         }
-       
         updateAttachkBox(); 
         updatePos();
         if(attacking)
@@ -86,6 +86,7 @@ public class Character extends Entity {
         updateAnimationTick();
         setAnimation();
     }
+    //Updates the character's health bar, attack box, position, animation tick, and animation.
     
     private void checkAttack() {
         if(attackChecked || aniIndex != 1)
@@ -93,6 +94,7 @@ public class Character extends Entity {
         attackChecked = true;
         playing.checkEnemyHit(attackBox);
     }
+    // Checks if the character is attacking and if it has hit an enemy.
 
     private void updateAttachkBox() {
         if (right) {
@@ -102,10 +104,12 @@ public class Character extends Entity {
         }
         attackBox.y = hitbox.y + (int) (Game.SCALE * 10);
     }
+    //Updates the position of the attack box based on the direction the character is facing.
 
     private void updateHealthBar() {
         healthWidth = (int) ((currentHealth / (float) maxHealth) * healthBarWidth);
     }
+    //Updates the health bar based on the current health of the character.
 
     public void render(Graphics g, int lvlOffset) {
         g.drawImage(animations[characterAction][aniIndex], 
@@ -116,17 +120,20 @@ public class Character extends Entity {
 //        drawAttaclBox(g, lvlOffset);
         drawUI(g);
     }
+    //Renders the character on the screen, including its animation, hitbox, attack box, and health bar.
 
     private void drawAttaclBox(Graphics g, int lvlOffsetX) {
         g.setColor(Color.red);
         g.drawRect((int) attackBox.x - lvlOffsetX, (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
     }
+    //Draws the attack box on the screen.
 
     private void drawUI(Graphics g) {
         g.drawImage(statusBarImg, statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
         g.setColor(Color.red);
         g.fillRect(healthBarXStart + statusBarX, healthBarYStart + statusBarY, healthWidth, healthBarHeight);
     }
+    //Draws the health bar and status bar on the screen.
 
     private void updateAnimationTick() {
         aniTick++;
@@ -140,6 +147,7 @@ public class Character extends Entity {
             }
         }
     }
+    //Updates the animation tick for the character.
 
     private void setAnimation() {
         int startAni = characterAction;
@@ -168,6 +176,7 @@ public class Character extends Entity {
             resetAniTick();
         }
     }
+    //Sets the animation for the character based on whether it is moving or not, and whether it is attacking or not
 
     private void resetAniTick() {
         aniTick = 0;
