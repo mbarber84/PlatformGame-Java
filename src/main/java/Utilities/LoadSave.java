@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 /**
- *
+ *This Java code defines a utility class called LoadSave that provides methods for loading and saving game assets such as sprite images and level data. The class includes several    * public constants that represent the filenames of various assets, such as player sprites, menu buttons, and sound effects. 
  * @author mbarb
  */
 public class LoadSave {
@@ -41,6 +41,7 @@ public class LoadSave {
         }//try catch .close() 
         return img;
     }
+    //GetSpriteAtlas(String filename): This method takes a filename string as input and returns a BufferedImage object representing the sprite atlas image located in the "Res/"        directory with the given filename. If the image file cannot be read, the method prints a stack trace and returns null.
     
     public static ArrayList<Crabby> GetCrabs(){
         BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
@@ -55,6 +56,7 @@ public class LoadSave {
         }
         return list;
     }
+    //a method named GetCrabs that returns an ArrayList of Crabby objects. The purpose of the method is to read an image file called LEVEL_ONE_DATA using the GetSpriteAtlas method     and search for pixels that have a specific color.
 
     public static int[][] GetLevelData() {   
         BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
@@ -72,4 +74,5 @@ public class LoadSave {
         }
         return lvlData;
     }
+    //GetLevelData(): This method reads the level data image file "level_one_data_long.png" using the GetSpriteAtlas method and returns a two-dimensional integer array representing       the tile values of the level map. Each element of the array represents a tile in the level, with a value of 0 indicating an empty tile and a value of 1 indicating a solid           tile. The method uses the red component of each pixel in the level data image to determine the tile value
 }

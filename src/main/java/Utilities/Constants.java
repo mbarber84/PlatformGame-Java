@@ -5,6 +5,9 @@ import com.mycompany.platformgame.Game;
 /**
  *
  * @author mbarb
+ * The class contains several static nested classes that define constants used in a platform video game.
+ * The constants include values for character actions, enemy types, and user interface elements such as button sizes.
+ * The code also includes a method for getting the number of sprites for each action and another for getting the health and damage values for each enemy type.
  */
 public class Constants {
     
