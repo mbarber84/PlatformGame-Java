@@ -6,8 +6,7 @@ import static Utilities.Constants.UI.PauseButtons.*;
 import java.awt.Graphics;
 
 /**
- *
- * @author mbarb
+class called SoundButton that extends the PauseButton class and represents a button in a graphical user interface. It loads images for the button from a sprite atlas file and has methods to update the button's appearance based on user input, draw it on the screen, and reset boolean variables for tracking mouse events. The class also has boolean variables to keep track of whether the mouse is hovering over the button, if the button is pressed, and whether the sound is muted.
  */
 public class SoundButton extends PauseButton{
     
@@ -21,6 +20,7 @@ public class SoundButton extends PauseButton{
         
         loadSoundImgs();
     }
+    //constructor for creating a new instance of the SoundButton class with the given position and dimensions.
 
     private void loadSoundImgs() {
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SOUND_BUTTONS);
@@ -29,6 +29,7 @@ public class SoundButton extends PauseButton{
             for(int i = 0; i < soundImgs[j].length; i++)
                 soundImgs[j][i] = temp.getSubimage(i * SOUND_SIZE_DEFAULT, j * SOUND_SIZE_DEFAULT, SOUND_SIZE_DEFAULT, SOUND_SIZE_DEFAULT);
     }
+    //a private method that loads the images for the button from a sprite atlas file and stores them in a 2D array.
     
     public void update(){
         if(muted)
@@ -42,6 +43,7 @@ public class SoundButton extends PauseButton{
         if(mousePressed)
             colIndex = 0;
     }
+    // a method that updates the appearance of the button based on user input by setting the row and column index of the image to be displayed.
     
     public void restBools(){
         mouseOver = false;
@@ -74,7 +76,5 @@ public class SoundButton extends PauseButton{
 
     public void setMuted(boolean muted) {
         this.muted = muted;
-    }
-    
-    
+    }   
 }

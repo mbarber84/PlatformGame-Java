@@ -5,9 +5,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import static Utilities.Constants.UI.URMButtons.*;
 
-/**
- *
- * @author mbarb
+/**(URM - Unpaused, Restart, Menu)
+ * class UrmButton extends the PauseButton class and represents a button in a graphical user interface. It loads images for the button from a sprite atlas file and has methods to update the button's appearance based on user input, draw it on the screen, and reset boolean variables for tracking mouse events. The class also has boolean variables to keep track of whether the mouse is hovering over the button or if the button is pressed.
+ * 
  */
 public class UrmButton extends PauseButton{
     
@@ -20,6 +20,7 @@ public class UrmButton extends PauseButton{
         this.rowIndex = rowIndex;
         loadImgs();
     }
+    //a constructor method that initializes the button's position and size and calls loadImgs() to load the button's images from a sprite atlas file.
     
     private void loadImgs() {
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.URM_BUTTONS);
@@ -27,6 +28,7 @@ public class UrmButton extends PauseButton{
         for(int i = 0; i < imgs.length; i++)
             imgs[i] = temp.getSubimage(i * URM_SIZE_DEFAULT, rowIndex * URM_SIZE_DEFAULT, URM_SIZE_DEFAULT, URM_SIZE_DEFAULT);
     }
+    // a private method that loads the button's images from a sprite atlas file and stores them in an array of BufferedImages.
     
     public void update(){
         index = 0;
@@ -35,6 +37,7 @@ public class UrmButton extends PauseButton{
         if(mousePressed)
             index = 2;
     }
+    //a method that updates the appearance of the button based on user input. It sets the index of the button's current image based on whether the mouse is hovering over the button or if the button is pressed.
     
     public void draw(Graphics g){
         
@@ -45,6 +48,7 @@ public class UrmButton extends PauseButton{
         mouseOver = false;
         mousePressed = false;
     }
+    //a method that resets the mouseOver and mousePressed boolean variables to false.
 
     public boolean isMouseOver() {
         return mouseOver;
@@ -60,8 +64,5 @@ public class UrmButton extends PauseButton{
 
     public void setMousePressed(boolean mousePressed) {
         this.mousePressed = mousePressed;
-    }
-
-    
-    
+    }  
 }
