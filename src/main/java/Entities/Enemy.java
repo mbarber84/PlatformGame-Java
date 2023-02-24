@@ -8,8 +8,8 @@ import java.awt.geom.Rectangle2D;
 
 
 /**
+ *  a Java abstract class called "Enemy" that extends from another class called "Entity". It contains various protected fields and methods that are used by subclasses to represent  *  different types of enemies in a game. These fields and methods include things like movement behaviour, health, animation, and attack mechanics.
  *
- * @author mbarb
  */
 public abstract class Enemy extends Entity{
     
@@ -41,6 +41,7 @@ public abstract class Enemy extends Entity{
                inAir = true;
            firstUpdate = false;
     }
+    //A protected method that checks if the entity is on the ground or not. If it is not on the ground, sets the inAir variable to true.
     
     protected void updateInAir(int[][] lvlData){
         if(CanMoveHere(hitbox.x, hitbox.y + fallSpeed, hitbox.width, hitbox.height, lvlData)){
@@ -52,6 +53,7 @@ public abstract class Enemy extends Entity{
                 tileY = (int)(hitbox.y / Game.TILES_SIZE);
             }
     }
+    //A protected method that updates the position of the entity when it is in the air. If it can move down, it moves down and falls faster. Otherwise, it sets the position of the entity on the ground.
     
     protected void move(int[][] lvlData){
         float xSpeed = 0;
@@ -68,6 +70,7 @@ public abstract class Enemy extends Entity{
                         }
                     changeWalkDir();
     }
+    //A protected method that moves the entity to the left or right depending on the direction it is facing. If it can move in that direction, it moves. Otherwise, it changes the direction it is facing.
     
     protected void turnTowardsCharacter(Character character){
         if(character.hitbox.x > hitbox.x)
@@ -75,6 +78,7 @@ public abstract class Enemy extends Entity{
         else
             walkDir = LEFT;
     }
+    //A protected method that turns the entity towards the character it is facing.
     
     protected boolean characterDetected(int[][] lvlData, Character character){
         int characterTileY = (int)(character.getHitbox().y / Game.TILES_SIZE);
@@ -83,32 +87,35 @@ public abstract class Enemy extends Entity{
                 if(IsClearSight(lvlData, hitbox, character.hitbox, tileY))
                     return true;
             }
-        
         return false;
     }
+    //A protected method that checks if the character is in the range of the entity's detection. If the character is in range, checks if there is a clear line of sight between the character and the entity. Returns true if the character is detected.
     
     protected boolean isCharacterInRange(Character character){
         int absValue = (int)Math.abs(character.hitbox.x - hitbox.x);
         return absValue <= attackDistance * 5;
     }
+    //A protected method that checks if the character is in the range of the entity's detection. Returns true if the character is in range.
     
     protected boolean isCharacterInRangeOfAttack(Character character){
         int absValue = (int)Math.abs(character.hitbox.x - hitbox.x);
         return absValue <= attackDistance;
     }
+    //A protected method that checks if the character is in the range of the entity's attack. Returns true if the character is in range.
     
     protected void newState(int enemyState){
         this.enemyState = enemyState;
         aniTick = 0;
         aniIndex = 0;
     }
-    
+    //A protected method that sets the state of the entity to the given state, sets the animation tick to 0 and the animation index to 0.
      
     protected void checkEnemyHit(Rectangle2D.Float attackBox, Character character) {
         if(attackBox.intersects(character.hitbox))
             character.changeHealth(-GetEnemyDmg(enemyType));
         attackChecked = true;
     }
+    //A protected method that checks if the entity's attack box intersects with the character's hitbox. If they intersect, decreases the character's health by the enemy's damage.
     
     public void hurt(int amount){
         currentHealth -= amount;
@@ -117,6 +124,7 @@ public abstract class Enemy extends Entity{
         else
             newState(HIT);
     }
+    //A public method that decreases the entity's health by the given amount. If the entity's health is less than or equal to 0, sets the state of the entity to "DEAD". Otherwise, sets the state to "HIT".
     
     protected void updateAnimationTick(){
         aniTick++;
@@ -130,6 +138,7 @@ public abstract class Enemy extends Entity{
                     case ATTACK,HIT -> enemyState = IDLE;
                     case DEAD -> active = false;
                 }
+                //OLD VERSION REPLACED WITH ONE ABOVE
 //                if(enemyState == ATTACK)
 //                    enemyState = IDLE;
 //                else if(enemyState == HIT)
@@ -139,6 +148,7 @@ public abstract class Enemy extends Entity{
             }
         }
     }
+    //A protected method that updates the animation tick and animation index of the entity. If the animation index is greater than or equal to the sprite amount of the current enemy state, it sets the animation index to 0 and changes the state of the entity depending on its current state.
 
     protected void changeWalkDir(){
         if(walkDir == LEFT)
@@ -146,6 +156,7 @@ public abstract class Enemy extends Entity{
         else
             walkDir = LEFT;
     }
+    //changes the direction that the entity is walking in.
     
     public void resetEnemy(){
         hitbox.x = x;
@@ -156,6 +167,7 @@ public abstract class Enemy extends Entity{
         active = true;
         fallSpeed = 0;
     }
+    //resets the position, state, and health of the entity to its initial state.
     
     public int getAniIndex(){
         return aniIndex;
@@ -163,10 +175,7 @@ public abstract class Enemy extends Entity{
     public int getEnemyState(){
         return enemyState;
     }
-    
     public boolean isActive(){
         return active;
     }
-
-    
 }
